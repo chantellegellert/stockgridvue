@@ -1,18 +1,15 @@
 <template>
   <div class="home">
     <UserLogin />
-    <!-- <Login /> -->
   </div>
 </template>
 
 <script>
 import UserLogin from "@/components/UserLogin.vue";
-// import Login from "@/components/Login.vue";
 export default {
   name: "Home",
   components: {
     UserLogin
-    // Login
   }
 };
 </script>
