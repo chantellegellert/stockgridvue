@@ -192,7 +192,7 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
-  height: 100vh;
+  height: 100%;
   background-color: rgba(29, 38, 117, 0.2);
 
   .failedlogin {
