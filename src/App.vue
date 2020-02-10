@@ -208,16 +208,12 @@ body {
   flex-flow: column;
   height: 100%;
 }
+</style>
 
+<style lang="less" scoped>
 .hide {
   display: none;
 }
-
-.md-drawer {
-  width: 230px;
-  max-width: calc(100vw - 125px);
-}
-
 .md-content {
   padding: 16px;
 }
