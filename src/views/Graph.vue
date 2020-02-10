@@ -1,14 +1,14 @@
 <template>
   <div>
-    <router-link v-if="!userName || userName === ''" to="/">Home</router-link>
-    <div class="content" v-if="userName && userName !== ''">
+    <!-- <div class="content" v-if="userName && userName !== ''"> -->
+    <div>
       <div class="md-layout">
-        <!-- some kind of create chart -->
-        <!-- for loop would go here for multiple charts on the div -->
         <div
+          v-for="graph in graphs"
+          v-bind:key="graph.id"
           class="md-layout-item md-size-33 md-large-33 md-medium-size-50 md-xsmall-size-100"
         >
-          <chart-card data-background-color="blue"></chart-card>
+          <chart-card :data-background-color="graph.color"></chart-card>
         </div>
       </div>
     </div>
@@ -29,6 +29,10 @@ export default class Graph extends Vue {
   get userName() {
     return this.$store.state.userName;
   }
+
+  get graphs() {
+    return this.$store.state.graphs;
+  }
   constructor() {
     super();
   }
@@ -38,3 +42,12 @@ export default class Graph extends Vue {
   mounted() {}
 }
 </script>
+
+<style lang="less" scoped>
+.md-layout {
+  margin: 20px;
+}
+.md-layout-item {
+  padding: 16px;
+}
+</style>

@@ -18,7 +18,7 @@ export default {
 .home {
   background-image: url(../assets/peaceful.jpg);
   background-repeat: no-repeat;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   background-size: 100% 100%;
 }

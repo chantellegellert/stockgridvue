@@ -25,21 +25,14 @@
       </ul>
     </md-card-content>
 
-    <md-card-content>
-      <div class="stats">
-        <div>
-          Data Field
-          <select v-model="field">
-            <option disabled value="">Please select one</option>
-            <option>open</option>
-            <option>high</option>
-            <option>low</option>
-            <option>close</option>
-            <option>volume</option>
-          </select>
-        </div>
-      </div>
-    </md-card-content>
+    <div class="checkboxs">
+      <md-checkbox v-model="field" value="all">All</md-checkbox>
+      <md-checkbox v-model="field" value="open">Open</md-checkbox>
+      <md-checkbox v-model="field" value="high">High</md-checkbox>
+      <md-checkbox v-model="field" value="low">Low</md-checkbox>
+      <md-checkbox v-model="field" value="close">Close</md-checkbox>
+      <md-checkbox v-model="field" value="volume">Volume</md-checkbox>
+    </div>
 
     <md-card-actions md-alignment="right">
       <div class="stats">
@@ -75,7 +68,7 @@ export default class ChartCard extends Vue {
 
   data: IStockData | null = null;
   options: any = null;
-  field: string = "open";
+  field: string[] = [];
   stockSymbol = "MSFT";
   editedSymbol: string | null = "";
   isEditing: boolean = false;
@@ -101,6 +94,7 @@ export default class ChartCard extends Vue {
     }
     this.stockSymbol = this.editedSymbol ? this.editedSymbol : "";
     this.isEditing = false;
+    this.refreshData();
   }
 
   cancelEdit() {
@@ -157,36 +151,30 @@ export default class ChartCard extends Vue {
 </style>
 
 <style lang="less" scoped>
-.md-card [data-background-color="blue"] {
-  background: linear-gradient(60deg, #26c6da, #00acc1);
-  -webkit-box-shadow: 0 12px 20px -10px rgba(0, 188, 212, 0.28),
-    0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 188, 212, 0.2);
-  box-shadow: 0 12px 20px -10px rgba(0, 188, 212, 0.28),
-    0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 188, 212, 0.2);
+.md-card [data-background-color="darkblue"] {
+  background: linear-gradient(60deg, #1d2675, #171e5e);
+  -webkit-box-shadow: 0 12px 20px -10px rgba(11, 15, 46, 0.28),
+    0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(9, 12, 37, 0.2);
+  box-shadow: 0 12px 20px -10px rgba(11, 15, 46, 0.28),
+    0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(9, 12, 37, 0.2);
 }
 
-.md-card [data-background-color="red"] {
-  background: linear-gradient(60deg, #ef5350, #e53935);
-  -webkit-box-shadow: 0 12px 20px -10px rgba(244, 67, 54, 0.28),
-    0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2);
-  box-shadow: 0 12px 20px -10px rgba(244, 67, 54, 0.28),
-    0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2);
+.md-card [data-background-color="grey"] {
+  background: linear-gradient(60deg, #919095, #717173);
+  -webkit-box-shadow: 0 12px 20px -10px rgba(57, 56, 58, 0.28),
+    0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(57, 56, 58, 0.28);
+  box-shadow: 0 12px 20px -10px rgba(57, 56, 58, 0.28),
+    0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(57, 56, 58, 0.2);
 }
 
-.md-card [data-background-color="green"] {
-  background: linear-gradient(60deg, #66bb6a, #43a047);
-  -webkit-box-shadow: 0 12px 20px -10px rgba(76, 175, 80, 0.28),
-    0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(76, 175, 80, 0.2);
-  box-shadow: 0 12px 20px -10px rgba(76, 175, 80, 0.28),
-    0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(76, 175, 80, 0.2);
+.md-card [data-background-color="lightblue"] {
+  background: linear-gradient(60deg, #8cd2f4, #46b7ed);
+  -webkit-box-shadow: 0 12px 20px -10px rgba(55, 82, 96, 0.28),
+    0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(27, 72, 93, 0.2);
+  box-shadow: 0 12px 20px -10px rgba(55, 82, 96, 0.28),
+    0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(27, 72, 93, 0.2);
 }
 
-.md-card-header {
-  &.card {
-    padding: 0;
-    min-height: 160px;
-  }
-}
 .md-card [data-background-color] {
   color: #ffffff;
 }
@@ -228,5 +216,47 @@ export default class ChartCard extends Vue {
 
 .md-card .md-card-actions div {
   display: inline-block;
+}
+
+// box do overlay
+.md-card {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  margin: 25px 0;
+  overflow: unset;
+
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+
+  .checkboxs {
+    padding: 0px 10px;
+  }
+
+  .card-height-indicator {
+    margin-top: 100%;
+  }
+
+  &.row-space {
+    .header {
+      padding: 15px 20px 0;
+    }
+  }
+
+  .md-card-content {
+    padding: 15px 20px;
+  }
+
+  .md-card-header {
+    &.card-chart {
+      padding: 0;
+      min-height: 160px;
+
+      + .content {
+        h4 {
+          margin-top: 0;
+        }
+      }
+    }
+  }
 }
 </style>
