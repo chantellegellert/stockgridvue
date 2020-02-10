@@ -11,7 +11,7 @@
         <div
           v-for="(graph, index) in graphs"
           v-bind:key="graph.id"
-          class="md-layout-item md-size-33 md-large-33 md-medium-size-50 md-xsmall-size-100"
+          class="md-layout-item md-size-25 md-large-25 md-medium-size-33 md-small-size-50 md-xsmall-size-100"
         >
           <chart-card :index="index"></chart-card>
         </div>

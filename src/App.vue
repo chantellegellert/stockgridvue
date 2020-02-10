@@ -111,21 +111,13 @@
             <md-divider></md-divider>
             <md-subheader>Data Field</md-subheader>
             <div class="checkboxs">
-              <md-checkbox v-model="newGraph.fields" value="open"
-                >Open</md-checkbox
+              <md-checkbox
+                v-for="item in newGraph.fields"
+                v-bind:key="item.id"
+                v-model="item.checked"
               >
-              <md-checkbox v-model="newGraph.fields" value="high"
-                >High</md-checkbox
-              >
-              <md-checkbox v-model="newGraph.fields" value="low"
-                >Low</md-checkbox
-              >
-              <md-checkbox v-model="newGraph.fields" value="close"
-                >Close</md-checkbox
-              >
-              <md-checkbox v-model="newGraph.fields" value="volume"
-                >Volume</md-checkbox
-              >
+                {{ item.value }}
+              </md-checkbox>
             </div>
           </md-list>
 
@@ -155,7 +147,13 @@ export default class App extends Vue {
   newGraph = {
     color: "",
     stockName: "",
-    fields: []
+    fields: [
+        { checked: false, value: "open" },
+        { checked: false, value: "close" },
+        { checked: false, value: "high" },
+        { checked: false, value: "low" },
+        { checked: false, value: "volume" }
+      ]
   };
 
   get userName() {
@@ -179,11 +177,18 @@ export default class App extends Vue {
 
   submit() {
     var newGraph = cloneDeep(this.newGraph);
+    newGraph.stockName === "" ? "MSFt" : newGraph.stockName;
     this.$store.commit("addGraph", newGraph);
     this.newGraph = {
       color: "",
       stockName: "",
-      fields: []
+      fields: [
+        { checked: false, value: "open" },
+        { checked: false, value: "close" },
+        { checked: false, value: "high" },
+        { checked: false, value: "low" },
+        { checked: false, value: "volume" }
+      ]
     };
   }
 

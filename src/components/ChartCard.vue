@@ -26,12 +26,30 @@
     </md-card-content>
 
     <div class="checkboxs">
-      <md-checkbox v-model="field" value="all">All</md-checkbox>
+      <md-checkbox
+        id="toggle-all"
+        class="toggle-all"
+        v-model="allSelect"
+        @change="selectAll()"
+      >
+        All
+      </md-checkbox>
+
+      <md-checkbox
+        v-for="item in items"
+        v-bind:key="item.id"
+        v-model="item.checked"
+        @change="checkAll()"
+      >
+        {{ item.value }}
+      </md-checkbox>
+
+      <!-- <md-checkbox v-model="field" value="all">All</md-checkbox>
       <md-checkbox v-model="field" value="open">Open</md-checkbox>
       <md-checkbox v-model="field" value="high">High</md-checkbox>
       <md-checkbox v-model="field" value="low">Low</md-checkbox>
       <md-checkbox v-model="field" value="close">Close</md-checkbox>
-      <md-checkbox v-model="field" value="volume">Volume</md-checkbox>
+      <md-checkbox v-model="field" value="volume">Volume</md-checkbox> -->
     </div>
 
     <md-card-actions md-alignment="right">
@@ -50,6 +68,24 @@ import { getTimeSeriesDaily, IStockData } from "../services/alphavantageAPI";
 import store from "@/store";
 import StockChart from "../components/StockChart.vue";
 
+export interface IDataField {
+  checked: boolean;
+  value: string;
+}
+
+export function filterActiveItems(items) {
+  return items.filter(item => !item.checked);
+}
+
+export function filterSelectedItems(items: IDataField[]) {
+  let filtered: IDataField[] = items.filter(item => item.checked);
+  let result: string[] = [];
+  for (let filter of filtered) {
+    result.push(filter.value);
+  }
+  return result;
+}
+
 @Component({
   components: {
     StockChart
@@ -65,10 +101,11 @@ import StockChart from "../components/StockChart.vue";
 export default class ChartCard extends Vue {
   @Prop() index: number;
 
+  allSelect: boolean = false;
   dataBackgroundColor: string = "";
   data: IStockData | null = null;
   options: any = null;
-  field: string[] = [];
+  items: IDataField[] = [];
   stockSymbol = "MSFT";
   editedSymbol: string | null = "";
   isEditing: boolean = false;
@@ -78,13 +115,21 @@ export default class ChartCard extends Vue {
     return this.$store.state.graphs;
   }
 
+  get field() {
+    return filterSelectedItems(this.items);
+  }
+
+  get remaining() {
+    return filterActiveItems(this.items).length;
+  }
+
   constructor() {
     super();
   }
 
   created() {
     console.log("Created Chard Card for: ", this.index, this.stockSymbol);
-    this.field = this.graphs[this.index].fields;
+    this.items = this.graphs[this.index].fields;
     this.stockSymbol = this.graphs[this.index].stockName;
     this.dataBackgroundColor = this.graphs[this.index].color;
     this.refreshData();
@@ -102,7 +147,12 @@ export default class ChartCard extends Vue {
     if (!this.editedSymbol) {
       return;
     }
-    console.log("Finished editing new symbol: ", this.editedSymbol, " old symbol: ", this.beforeEditCache);
+    console.log(
+      "Finished editing new symbol: ",
+      this.editedSymbol,
+      " old symbol: ",
+      this.beforeEditCache
+    );
     this.stockSymbol = this.editedSymbol ? this.editedSymbol : "";
     this.isEditing = false;
     this.refreshData();
@@ -118,6 +168,16 @@ export default class ChartCard extends Vue {
   async refreshData() {
     console.log("Refreshing data");
     this.data = await getTimeSeriesDaily(this.stockSymbol);
+  }
+
+  selectAll() {
+    for (let t of this.items) {
+      t.checked = this.allSelect;
+    }
+  }
+
+  checkAll() {
+    this.allSelect = this.remaining === 0;
   }
 }
 </script>
