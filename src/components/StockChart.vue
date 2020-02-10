@@ -49,16 +49,9 @@ export default class StockChart extends Vue {
   @Watch("field", { immediate: true })
   @Watch("data", { immediate: true })
   onDataChange() {
+    console.log("Data or field chaned need to update chart");
     if (this.myChart && this.data) {
-      let chartData = this.parseStockData(this.data, this.field
-      // [
-      //   "open",
-      //   "high",
-        // "low",
-        // "close"
-        // // "volume"
-      // ]
-      );
+      let chartData = this.parseStockData(this.data, this.field);
       this.myChart.data = chartData;
       this.myChart.update();
     }
