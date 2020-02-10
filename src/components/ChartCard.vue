@@ -83,6 +83,7 @@ export default class ChartCard extends Vue {
   }
 
   created() {
+    console.log("Created Chard Card for: ", this.index, this.stockSymbol);
     this.field = this.graphs[this.index].fields;
     this.stockSymbol = this.graphs[this.index].stockName;
     this.dataBackgroundColor = this.graphs[this.index].color;
@@ -101,18 +102,21 @@ export default class ChartCard extends Vue {
     if (!this.editedSymbol) {
       return;
     }
+    console.log("Finished editing new symbol: ", this.editedSymbol, " old symbol: ", this.beforeEditCache);
     this.stockSymbol = this.editedSymbol ? this.editedSymbol : "";
     this.isEditing = false;
     this.refreshData();
   }
 
   cancelEdit() {
+    console.log("User canceled editing");
     this.stockSymbol = this.beforeEditCache;
     this.editedSymbol = null;
     this.isEditing = false;
   }
 
   async refreshData() {
+    console.log("Refreshing data");
     this.data = await getTimeSeriesDaily(this.stockSymbol);
   }
 }
