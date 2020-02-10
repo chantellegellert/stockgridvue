@@ -19,7 +19,7 @@ export default class StockChart extends Vue {
   }
 
   created() {
-    console.log("rendering chart");
+    console.log("Rendering graph page");
   }
 
   mounted() {

@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <!--  v-if="userName && userName !== ''" -->
-    <div class="page-container md-layout-column">
+    <div
+      class="page-container md-layout-column"
+      v-if="userName && userName !== ''"
+    >
       <md-toolbar class="md-primary" :md-elevation="1">
         <md-button class="md-icon-button" @click="showNavigation = true">
           <md-icon>menu</md-icon>
@@ -13,6 +15,11 @@
             v-if="$route.name === 'Graph'"
             @click="showSidepanel = true"
             >Create New Graph</md-button
+          >
+        </div>
+        <div class="md-toolbar-section-end">
+          <md-button v-if="$route.name === 'Graph'" @click="deleteGraphs()"
+            >Delete Graphs</md-button
           >
         </div>
       </md-toolbar>
@@ -53,7 +60,7 @@
       >
         <div class="viewport">
           <md-toolbar :md-elevation="1">
-            <span class="md-title">Create New Grid</span>
+            <span class="md-title">Create New Graph</span>
           </md-toolbar>
 
           <md-list class="md-double-line">
@@ -178,6 +185,10 @@ export default class App extends Vue {
       stockName: "",
       fields: []
     };
+  }
+
+  deleteGraphs() {
+    this.$store.commit("deleteGraphs");
   }
 }
 </script>

@@ -1,14 +1,19 @@
 <template>
   <div>
-    <!-- <div class="content" v-if="userName && userName !== ''"> -->
-    <div>
+    <div class="content" v-if="!userName || userName === ''">
+      You must log in first.
+      <router-link to="/">
+        <button class="paginationButton bColorRegular">Go Login Page</button>
+      </router-link>
+    </div>
+    <div class="content" v-if="userName && userName !== ''">
       <div class="md-layout">
         <div
-          v-for="graph in graphs"
+          v-for="(graph, index) in graphs"
           v-bind:key="graph.id"
           class="md-layout-item md-size-33 md-large-33 md-medium-size-50 md-xsmall-size-100"
         >
-          <chart-card :data-background-color="graph.color"></chart-card>
+          <chart-card :index="index"></chart-card>
         </div>
       </div>
     </div>

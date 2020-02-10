@@ -39,6 +39,7 @@
   </div>
 </template>
 
+<!-- old login didn't end up using -->
 <script>
 import { Component, Prop, Emit, Vue } from "vue-property-decorator";
 import { dataService } from "../services/dataService";

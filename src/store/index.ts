@@ -16,6 +16,9 @@ export default new Vuex.Store({
     },
     addGraph(state, newGraph: GraphModel) {
       state.graphs.push(newGraph);
+    },
+    deleteGraphs(state){
+      state.graphs = [];
     }
   },
   actions: {
@@ -24,6 +27,9 @@ export default new Vuex.Store({
     },
     addGraph(context, newGraph: GraphModel) {
       context.commit('addGraph', newGraph);
+    },
+    deleteGraphs(context) {
+      context.commit('deleteGraphs');
     }
   }
 });

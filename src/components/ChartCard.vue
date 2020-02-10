@@ -47,8 +47,8 @@
 <script lang="ts">
 import { Component, Prop, Emit, Vue } from "vue-property-decorator";
 import { getTimeSeriesDaily, IStockData } from "../services/alphavantageAPI";
+import store from "@/store";
 import StockChart from "../components/StockChart.vue";
-import { cloneDeep } from "lodash";
 
 @Component({
   components: {
@@ -56,7 +56,6 @@ import { cloneDeep } from "lodash";
   },
   directives: {
     "symbol-focus": function(el, binding) {
-      // only focus on item double clicked
       if (binding.value) {
         el.focus();
       }
@@ -64,8 +63,9 @@ import { cloneDeep } from "lodash";
   }
 })
 export default class ChartCard extends Vue {
-  @Prop() dataBackgroundColor: string;
+  @Prop() index: number;
 
+  dataBackgroundColor: string = "";
   data: IStockData | null = null;
   options: any = null;
   field: string[] = [];
@@ -74,11 +74,20 @@ export default class ChartCard extends Vue {
   isEditing: boolean = false;
   beforeEditCache: string = "";
 
+  get graphs() {
+    return this.$store.state.graphs;
+  }
+
   constructor() {
     super();
   }
 
-  created() {}
+  created() {
+    this.field = this.graphs[this.index].fields;
+    this.stockSymbol = this.graphs[this.index].stockName;
+    this.dataBackgroundColor = this.graphs[this.index].color;
+    this.refreshData();
+  }
 
   destroyed() {}
 
